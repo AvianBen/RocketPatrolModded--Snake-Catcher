@@ -4,24 +4,24 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("starfield", "assets/starfield.png");
-        this.load.image("rocket", "assets/rocket.png");
-        this.load.image("ship", "assets/spaceship.png")
+        this.load.image("desert", "assets/desert.png");
+        this.load.image("tranq", "assets/tranq.png");
+        this.load.image("snake", "assets/snake.png")
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
 
     create() {
-        this.starfield = this.add.tileSprite(
-            0,0,640,480, "starfield"
+        this.desert = this.add.tileSprite(
+            0,0,640,480, "desert"
         ).setOrigin(0,0);
 
-        this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height- borderUISize - borderPadding, "rocket")
+        this.p1Tranq = new Tranq(this, game.config.width/2, game.config.height- borderUISize - borderPadding, "tranq")
 
-        // add spaceships (x3)
-        this.ship1 = new Ship(this, game.config.width + borderUISize*6, borderUISize*4, 'ship', 0, 30).setOrigin(0, 0);
-        this.ship2 = new Ship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'ship', 0, 20).setOrigin(0,0);
-        this.ship3 = new Ship(this, game.config.width, borderUISize*6 + borderPadding*4, 'ship', 0, 10).setOrigin(0,0);
+        // add snakes (x3)
+        this.snake1 = new Snake(this, game.config.width + borderUISize*6, borderUISize*4, 'snake', 0, 30).setOrigin(0, 0);
+        this.snake2 = new Snake(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'snake', 0, 20).setOrigin(0,0);
+        this.snake3 = new Snake(this, game.config.width, borderUISize*6 + borderPadding*4, 'snake', 0, 10).setOrigin(0,0);
 
         //green UI bg
         this.add.rectangle(0 , borderUISize + borderPadding, game.config.width, borderUISize*2, 0x00FF00,).setOrigin(0,0);
@@ -85,54 +85,54 @@ class Play extends Phaser.Scene {
             this.scene.start("menuScene");
         }
 
-        this.starfield.tilePositionX -= 4;
+        this.desert.tilePositionX -= 4;
 
         if (!this.gameOver) {               
-            this.p1Rocket.update();         // update rocket sprite
-            this.ship1.update();           // update spaceships (x3)
-            this.ship2.update();
-            this.ship3.update();
+            this.p1Tranq.update();         // update tranq sprite
+            this.snake1.update();           // update snakes (x3)
+            this.snake2.update();
+            this.snake3.update();
         } 
         // check collisions
-        if(this.checkCollision(this.p1Rocket, this.ship3)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship3);  
+        if(this.checkCollision(this.p1Tranq, this.snake3)) {
+            this.p1Tranq.reset();
+            this.snakeExplode(this.snake3);  
         }
-        if (this.checkCollision(this.p1Rocket, this.ship2)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship2);  
+        if (this.checkCollision(this.p1Tranq, this.snake2)) {
+            this.p1Tranq.reset();
+            this.snakeExplode(this.snake2);  
         }
-        if (this.checkCollision(this.p1Rocket, this.ship1)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship1);  
+        if (this.checkCollision(this.p1Tranq, this.snake1)) {
+            this.p1Tranq.reset();
+            this.snakeExplode(this.snake1);  
         }
     }
 
-    checkCollision(rocket, ship) {
+    checkCollision(tranq, snake) {
         // simple AABB checking
-        if (rocket.x < ship.x + ship.width && 
-            rocket.x + rocket.width > ship.x && 
-            rocket.y < ship.y + ship.height &&
-            rocket.height + rocket.y > ship.y) {
+        if (tranq.x < snake.x + snake.width && 
+            tranq.x + tranq.width > snake.x && 
+            tranq.y < snake.y + snake.height &&
+            tranq.height + tranq.y > snake.y) {
                 return true;
         } else {
             return false;
         }
     }
 
-    shipExplode(ship) {
-        // temporarily hide ship
-        ship.alpha = 0;                         
-        // create explosion sprite at ship's position
-        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
+    snakeExplode(snake) {
+        // temporarily hide snake
+        snake.alpha = 0;                         
+        // create explosion sprite at snake's position
+        let boom = this.add.sprite(snake.x, snake.y, 'explosion').setOrigin(0, 0);
         boom.anims.play('explode');             // play explode animation
         boom.on('animationcomplete', () => {    // callback after ani completes
-          ship.reset();                       // reset ship position
-          ship.alpha = 1;                     // make ship visible again
+          snake.reset();                       // reset snake position
+          snake.alpha = 1;                     // make snake visible again
           boom.destroy();                     // remove explosion sprite
         });
         // score add and repaint
-        this.p1Score += ship.points;
+        this.p1Score += snake.points;
         this.scoreLeft.text = this.p1Score;   
         this.sound.play('sfx_explosion');    
       }
