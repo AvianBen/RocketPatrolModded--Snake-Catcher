@@ -5,8 +5,8 @@ class Menu extends Phaser.Scene {
 
     preload() {
         // load audio
-        this.load.audio('sfx_select', './assets/blip_select12.wav');
-        this.load.audio('sfx_explosion', './assets/explosion38.wav');
+        this.load.audio('sfx_select', './assets/boot.mp3');
+        this.load.audio('sfx_hiss', './assets/hiss.mp3');
         this.load.audio('sfx_tranq', './assets/tranq_noise.mp3');
       }
 
@@ -44,7 +44,6 @@ class Menu extends Phaser.Scene {
             // easy mode
             game.settings = {
             snakeSpeed: 3,
-            snake2Speed: 5,
             gameTimer: 60000    
             }
             this.sound.play('sfx_select');
@@ -54,7 +53,6 @@ class Menu extends Phaser.Scene {
             // hard mode
             game.settings = {
             snakeSpeed: 4,
-            snake2Speed: 6,
             gameTimer: 45000    
             }
             this.sound.play('sfx_select');

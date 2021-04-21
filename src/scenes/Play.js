@@ -5,8 +5,10 @@ class Play extends Phaser.Scene {
 
     preload() {
         this.load.image("desert", "assets/desert.png");
+        this.load.image("desertFrame", "assets/desertFrame.png")
         this.load.image("tranq", "assets/tranq.png");
         this.load.image("snake", "assets/snake.png")
+        this.load.image("snake2", "assets/snake2.png")
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
@@ -16,23 +18,22 @@ class Play extends Phaser.Scene {
             0,0,640,480, "desert"
         ).setOrigin(0,0);
 
-        this.p1Tranq = new Tranq(this, game.config.width/2, game.config.height- borderUISize - borderPadding, "tranq")
 
         // add snakes (x4)
-        this.snake1 = new Snake(this, game.config.width + borderUISize*6, borderUISize*4, 'snake', 0, 30, false).setOrigin(0, 0);
-        this.snake2 = new Snake(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'snake', 0, 20, false).setOrigin(0,0);
-        this.snake3 = new Snake(this, game.config.width, borderUISize*6 + borderPadding*4, 'snake', 0, 10, false).setOrigin(0,0);
-        this.snake4 = new Snake(this, game.config.width, borderUISize*6 + borderPadding*4, 'snake', 0, 10, true).setOrigin(0,0);
+        this.snake1 = new Snake(this, game.config.width + borderUISize*6, borderUISize*4, 'snake', 0, 30, 1).setOrigin(0, 0);
+        this.snake2 = new Snake(this, game.config.width + borderUISize*8, borderUISize*5.5 + borderPadding*2, 'snake', 0, 20, 1).setOrigin(0,0);
+        this.snake3 = new Snake(this, game.config.width, borderUISize*6 + borderPadding*4, 'snake', 0, 10, 1).setOrigin(0,0);
+        this.snake4 = new Snake(this, game.config.width, borderUISize*3 + borderPadding*5, 'snake2', 0, 40, 1.7).setOrigin(0,0);
 
         //green UI bg
         this.add.rectangle(0 , borderUISize + borderPadding, game.config.width, borderUISize*2, 0x987554,).setOrigin(0,0);
 
-        // white borders
-        this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
-        this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
-        this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0 ,0);
-        this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0 ,0);
- 
+        this.desertFrame = this.add.tileSprite(
+            0,0,640,480, "desertFrame"
+        ).setOrigin(0,0);
+
+        this.p1Tranq = new Tranq(this, game.config.width/2, game.config.height- borderUISize - borderPadding, "tranq")
+        
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -54,7 +55,7 @@ class Play extends Phaser.Scene {
             fontSize: '28px',
             backgroundColor: '#F3B141',
             color: '#843605',
-            align: 'right',
+            align: 'left',
             padding: {
             top: 5,
             bottom: 5,
@@ -74,6 +75,8 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
+
+
     }
 
     update() { 
@@ -87,6 +90,7 @@ class Play extends Phaser.Scene {
         }
 
         this.desert.tilePositionX -= 4;
+
 
         if (!this.gameOver) {               
             this.p1Tranq.update();         // update tranq sprite
@@ -141,6 +145,6 @@ class Play extends Phaser.Scene {
         // score add and repaint
         this.p1Score += snake.points;
         this.scoreLeft.text = this.p1Score;   
-        this.sound.play('sfx_explosion');    
+        this.sound.play('sfx_hiss');    
       }
 }
