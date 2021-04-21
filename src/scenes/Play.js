@@ -18,13 +18,14 @@ class Play extends Phaser.Scene {
 
         this.p1Tranq = new Tranq(this, game.config.width/2, game.config.height- borderUISize - borderPadding, "tranq")
 
-        // add snakes (x3)
-        this.snake1 = new Snake(this, game.config.width + borderUISize*6, borderUISize*4, 'snake', 0, 30).setOrigin(0, 0);
-        this.snake2 = new Snake(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'snake', 0, 20).setOrigin(0,0);
-        this.snake3 = new Snake(this, game.config.width, borderUISize*6 + borderPadding*4, 'snake', 0, 10).setOrigin(0,0);
+        // add snakes (x4)
+        this.snake1 = new Snake(this, game.config.width + borderUISize*6, borderUISize*4, 'snake', 0, 30, false).setOrigin(0, 0);
+        this.snake2 = new Snake(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'snake', 0, 20, false).setOrigin(0,0);
+        this.snake3 = new Snake(this, game.config.width, borderUISize*6 + borderPadding*4, 'snake', 0, 10, false).setOrigin(0,0);
+        this.snake4 = new Snake(this, game.config.width, borderUISize*6 + borderPadding*4, 'snake', 0, 10, true).setOrigin(0,0);
 
         //green UI bg
-        this.add.rectangle(0 , borderUISize + borderPadding, game.config.width, borderUISize*2, 0x00FF00,).setOrigin(0,0);
+        this.add.rectangle(0 , borderUISize + borderPadding, game.config.width, borderUISize*2, 0x987554,).setOrigin(0,0);
 
         // white borders
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
@@ -89,9 +90,10 @@ class Play extends Phaser.Scene {
 
         if (!this.gameOver) {               
             this.p1Tranq.update();         // update tranq sprite
-            this.snake1.update();           // update snakes (x3)
+            this.snake1.update();           // update snakes (x4)
             this.snake2.update();
             this.snake3.update();
+            this.snake4.update();
         } 
         // check collisions
         if(this.checkCollision(this.p1Tranq, this.snake3)) {
@@ -105,6 +107,11 @@ class Play extends Phaser.Scene {
         if (this.checkCollision(this.p1Tranq, this.snake1)) {
             this.p1Tranq.reset();
             this.snakeExplode(this.snake1);  
+        }
+
+        if (this.checkCollision(this.p1Tranq, this.snake4)) {
+            this.p1Tranq.reset();
+            this.snakeExplode(this.snake4);  
         }
     }
 

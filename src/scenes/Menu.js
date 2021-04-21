@@ -7,7 +7,7 @@ class Menu extends Phaser.Scene {
         // load audio
         this.load.audio('sfx_select', './assets/blip_select12.wav');
         this.load.audio('sfx_explosion', './assets/explosion38.wav');
-        this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
+        this.load.audio('sfx_tranq', './assets/tranq_noise.mp3');
       }
 
     create() {
@@ -27,7 +27,7 @@ class Menu extends Phaser.Scene {
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, "SNAKE CATCHER", menuConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2, "Use <-> arrows to move & (F) to fire", menuConfig).setOrigin(0.5);
         menuConfig.color = "#000";
-        menuConfig.backgroundColor = "#00FF00";
+        menuConfig.backgroundColor = "#C4A484";
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, "Press <- for Novice or -> for Expert", menuConfig).setOrigin(0.5);
 
 
@@ -44,6 +44,7 @@ class Menu extends Phaser.Scene {
             // easy mode
             game.settings = {
             snakeSpeed: 3,
+            snake2Speed: 5,
             gameTimer: 60000    
             }
             this.sound.play('sfx_select');
@@ -53,6 +54,7 @@ class Menu extends Phaser.Scene {
             // hard mode
             game.settings = {
             snakeSpeed: 4,
+            snake2Speed: 6,
             gameTimer: 45000    
             }
             this.sound.play('sfx_select');

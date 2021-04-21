@@ -4,13 +4,13 @@ class Tranq extends Phaser.GameObjects.Sprite {
         scene.add.existing(this);
         this.movementSpeed = 2;
         this.isFiring = false;
-        this.sfxRocket = scene.sound.add('sfx_rocket'); // add rocket sfx
+        this.sfxTranq = scene.sound.add('sfx_tranq'); // add tranq sfx
     }
 
     update() {
         if(this.isFiring) {
+            this.sfxTranq.play();  // play sfx
             this.y -= this.movementSpeed;
-            this.sfxRocket.play();  // play sfx
             if(this.y < borderUISize*3) {
                 this.reset();
             }
